@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10272d">
+  <meta name="description" content="Fictieve AIS-trainingssimulator voor het herkennen en terugspelen van maritieme signalen.">
+  <title>AIS Replay Lab — Debunker Passport</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/ais-simulator.css">
+</head>
+<body>
+  <header class="topbar replay-topbar">
+    <a class="brand" href="/"><span class="brand-mark">DP</span><span><strong>Debunker Passport</strong><small>AIS Replay Lab</small></span></a>
+    <div class="top-actions"><a class="library-link" href="/netwerkkaart">Netwerkkaart</a><a class="button ghost" href="/documenten">Documenten</a></div>
+  </header>
+  <main class="replay-shell">
+    <section class="replay-heading">
+      <div><p class="eyebrow">Synthetische trainingsdata · geen echte schepen</p><h1>Havenbewegingen terugspelen rond het signaal.</h1></div>
+      <p>Een fictief scenario in een gestileerde Rotterdamse havenomgeving. Nabijheid en AIS-gaten zijn onderzoekssignalen, geen bewijs van overslag of fraude.</p>
+    </section>
+
+    <section class="replay-workspace" aria-label="AIS terugspeelsimulator">
+      <div class="map-stage">
+        <svg id="harbourMap" viewBox="0 0 1200 650" role="img" aria-labelledby="mapTitle mapDesc">
+          <title id="mapTitle">Fictieve havenkaart met bewegende schepen</title>
+          <desc id="mapDesc">Gestileerde waterwegen, terminalzones en synthetische AIS-trajecten met drie trainingssignalen.</desc>
+          <defs>
+            <pattern id="waterGrid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" class="water-grid"/></pattern>
+            <filter id="softGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <rect width="1200" height="650" class="map-land"/>
+          <path class="map-water" d="M0 218 C165 190 275 250 420 222 C585 188 704 103 870 132 C1002 155 1068 216 1200 195 L1200 462 C1070 438 1006 484 861 472 C681 457 610 365 434 384 C255 404 158 468 0 442 Z"/>
+          <path class="map-water branch" d="M426 223 C420 154 460 86 535 0 L704 0 C641 84 606 166 610 216 Z"/>
+          <path class="map-water branch" d="M707 398 C738 482 752 557 741 650 L914 650 C894 553 862 481 823 433 Z"/>
+          <path class="map-water branch" d="M245 365 C198 316 161 286 96 276 L0 292 L0 406 C96 401 171 394 258 391 Z"/>
+          <path d="M0 218 C165 190 275 250 420 222 C585 188 704 103 870 132 C1002 155 1068 216 1200 195 L1200 462 C1070 438 1006 484 861 472 C681 457 610 365 434 384 C255 404 158 468 0 442 Z" fill="url(#waterGrid)" opacity=".45"/>
+          <g class="terminal-zone"><path d="M116 152h218v66H116z"/><text x="132" y="178">FICTIEVE TERMINAL WEST</text><text x="132" y="199">zone T-04</text></g>
+          <g class="terminal-zone"><path d="M724 70h220v62H724z"/><text x="740" y="96">FICTIEVE BULKOPSLAG</text><text x="740" y="117">zone B-12</text></g>
+          <g class="terminal-zone"><path d="M904 468h214v64H904z"/><text x="920" y="494">FICTIEVE BUNKERKADE</text><text x="920" y="515">zone K-07</text></g>
+          <g class="map-label"><text x="54" y="337">Maasgeul · schematisch</text><text x="475" y="52">havenbekken</text><text x="782" y="610">zijhaven</text></g>
+          <g id="trailLayer"></g><g id="eventLayer"></g><g id="vesselLayer"></g>
+          <g class="north"><path d="M1140 78l10-28 10 28-10-7z"/><text x="1145" y="100">N</text></g>
+        </svg>
+        <div class="map-legend" aria-label="Legenda"><span><i class="dot normal"></i>Normaal spoor</span><span><i class="dot signal"></i>Signaalvenster</span><span><i class="dot gap"></i>AIS-gat</span></div>
+        <div class="fiction-stamp">FICTIEF SCENARIO</div>
+      </div>
+
+      <aside class="signal-panel" aria-live="polite">
+        <p class="panel-kicker">Actief moment</p>
+        <time id="clock">14 mei 2026 · 02:00 UTC</time>
+        <h2 id="signalTitle">Normale vaart</h2>
+        <p id="signalText">Drie synthetische schepen varen door het studiegebied. Start de recorder of kies een signaal.</p>
+        <dl class="signal-facts"><div><dt>Classificatie</dt><dd id="signalClass">Observatie</dd></div><div><dt>Zekerheid</dt><dd id="signalConfidence">—</dd></div><div><dt>Vervolg</dt><dd id="signalAction">Blijf monitoren</dd></div></dl>
+        <div class="event-list" id="eventList" aria-label="Gedetecteerde signalen"></div>
+      </aside>
+    </section>
+
+    <section class="recorder" aria-label="Terugspeelbediening">
+      <div class="transport-controls">
+        <button id="playButton" class="transport-primary" type="button" aria-label="Afspelen">▶</button>
+        <button id="stepBack" type="button" aria-label="Vijftien minuten terug">−15m</button>
+        <button id="stepForward" type="button" aria-label="Vijftien minuten vooruit">+15m</button>
+        <label>Snelheid <select id="speedSelect"><option value="1">1×</option><option value="4" selected>4×</option><option value="12">12×</option></select></label>
+      </div>
+      <div class="timeline-wrap"><input id="timeline" type="range" min="0" max="360" value="0" step="1" aria-label="Scenariotijd in minuten"><div id="timelineMarkers" class="timeline-markers"></div><div class="timeline-axis"><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00 UTC</span></div></div>
+    </section>
+
+    <section class="method-strip">
+      <div><span>01</span><strong>Detecteer</strong><p>Regels markeren nabijheid, stilstand, AIS-gaten en documentafwijkingen.</p></div>
+      <div><span>02</span><strong>Speel terug</strong><p>Bekijk het venster vóór, tijdens en na het signaal met dezelfde tijdas.</p></div>
+      <div><span>03</span><strong>Verifieer</strong><p>Vraag BDN, MFM-, terminal-, camera- en monstergegevens op; AIS alleen volstaat niet.</p></div>
+    </section>
+  </main>
+  <script src="/ais-simulator.js"></script>
+</body>
+</html>
