@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10272d">
+  <meta name="description" content="Havenbrede Signaalverkenner voor transparante, defensieve analyse van synthetische AIS-patronen.">
+  <link rel="canonical" href="https://debunker-passport.vercel.app/signaalverkenner">
+  <title>Havenbrede Signaalverkenner — Debunker Passport</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/signaalverkenner.css">
+</head>
+<body>
+  <header class="topbar explorer-topbar">
+    <a class="brand" href="/"><span class="brand-mark">DP</span><span><strong>Debunker Passport</strong><small>Havenbrede Signaalverkenner</small></span></a>
+    <div class="top-actions"><a class="library-link" data-mobile-label="Netwerk" href="/netwerkkaart">Netwerkkaart</a><a class="library-link" data-mobile-label="Bibliotheek" href="/documenten">Onderzoeksbibliotheek</a><a class="button ghost" href="/">Dossierinstrument</a></div>
+  </header>
+  <main class="explorer-shell">
+    <section class="explorer-heading">
+      <div><p class="eyebrow">Breed signaleren · gericht verdiepen</p><h1>Havenbrede Signaalverkenner</h1></div>
+      <p>Van grote hoeveelheden posities naar een kleine, uitlegbare werkvoorraad voor menselijke beoordeling.</p>
+    </section>
+
+    <nav class="research-funnel" aria-label="Onderzoeksfasen">
+      <span class="active"><b>1</b> Havenbreed verkennen</span><i>→</i><span><b>2</b> Signalen groeperen</span><i>→</i><span><b>3</b> Bronnen vergelijken</span><i>→</i><a href="/ais-replay?case=SC-041"><b>4</b> Case Review</a>
+    </nav>
+
+    <div class="scope-bar" aria-label="Datascope"><span><b></b>Synthetische demonstratie</span><span>24 uur · 14 mei 2026 UTC</span><span>186 vaartuigen</span><span>28.640 posities</span><strong>Geen bewijs of operationele data</strong></div>
+
+    <section class="explorer-controls" aria-label="Filters">
+      <div><label for="signalFilter">Toon signalen</label><select id="signalFilter"><option value="all">Alle regels</option><option value="proximity">Nabijheid</option><option value="gap">AIS-onderbreking</option><option value="dwell">Ongebruikelijke verblijfsduur</option><option value="repeat">Herhaald contact</option><option value="identity">Identiteitswijziging</option></select></div>
+      <div><label for="statusFilter">Beoordelingsstatus</label><select id="statusFilter"><option value="all">Alle statussen</option><option value="review">Bronvergelijking nodig</option><option value="alternative">Alternatieve verklaring waarschijnlijk</option><option value="unreviewed">Nog niet beoordeeld</option></select></div>
+      <p id="resultCount" aria-live="polite">8 clusters zichtbaar</p>
+    </section>
+
+    <section class="explorer-workspace">
+      <div class="port-overview">
+        <svg id="portMap" viewBox="0 0 1280 690" role="img" aria-labelledby="portTitle portDesc">
+          <title id="portTitle">Schematisch havenbreed overzicht met synthetische vaartuigen en signaalclusters</title>
+          <desc id="portDesc">Een fictieve havenkaart toont algemene verkeersdrukte en acht neutrale signalen. Selecteer een signaal voor uitleg.</desc>
+          <defs><pattern id="explorerGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="water-grid"/></pattern><filter id="clusterGlow"><feGaussianBlur stdDeviation="7" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <rect width="1280" height="690" class="port-land"/>
+          <path class="port-water" d="M0 190C180 153 306 230 455 198C620 163 728 90 900 118C1054 142 1140 204 1280 170V486C1132 454 1055 514 891 490C711 465 633 373 462 405C284 438 157 495 0 458Z"/>
+          <path class="port-water" d="M405 205C416 135 474 67 538 0H724C646 84 620 154 624 200Z"/>
+          <path class="port-water" d="M765 423C801 492 829 580 824 690H1015C984 588 938 501 888 470Z"/>
+          <path class="port-water" d="M260 375C201 310 123 289 0 303V447C118 438 204 418 287 402Z"/>
+          <path class="port-water-grid" d="M0 190C180 153 306 230 455 198C620 163 728 90 900 118C1054 142 1140 204 1280 170V486C1132 454 1055 514 891 490C711 465 633 373 462 405C284 438 157 495 0 458Z"/>
+          <g class="terminal-labels"><text x="76" y="145">WESTELIJKE BULKZONES</text><text x="456" y="54">OPSLAGBEKKENS</text><text x="887" y="86">CENTRALE TERMINALS</text><text x="1016" y="565">BUNKERKADES</text><text x="64" y="528">AANLOOPGEBIED</text></g>
+          <g id="trafficLayer"></g><g id="clusterLayer"></g>
+          <g class="map-north"><path d="M1215 72l10-27 10 27-10-7z"/><text x="1220" y="94">N</text></g>
+        </svg>
+        <div class="map-key"><span><i class="traffic-dot"></i>Vaartuigpositie</span><span><i class="cluster-ring"></i>Gegroepeerd signaal</span><span>Selecteer een genummerd cluster</span></div>
+        <div class="fiction-stamp">FICTIEVE HAVEN · SYNTHETISCHE DATA</div>
+      </div>
+
+      <aside class="cluster-inspector" aria-live="polite">
+        <p class="panel-kicker" id="clusterCode">Selectie</p>
+        <h2 id="clusterTitle">Kies een signaalcluster</h2>
+        <p id="clusterDescription">De kaart groepeert afzonderlijke regelhits in controleerbare beoordelingsvensters.</p>
+        <dl class="cluster-facts" id="clusterFacts"><div><dt>Regel</dt><dd>—</dd></div><div><dt>Periode</dt><dd>—</dd></div><div><dt>Objecten</dt><dd>—</dd></div><div><dt>Status</dt><dd>—</dd></div></dl>
+        <section class="explanation"><h3>Alternatieve verklaring</h3><p id="alternativeText">Selecteer eerst een cluster. Een signaal is geen conclusie.</p></section>
+        <section class="explanation"><h3>Te vergelijken bronnen</h3><p id="sourcesText">—</p></section>
+        <a id="caseReviewLink" class="case-link is-hidden" href="/ais-replay?case=SC-041">Open voorbeeld in Case Review <span>→</span></a>
+        <p id="caseAvailability" class="case-availability">Voor dit cluster is geen verdiepende voorbeeldcasus geopend.</p>
+      </aside>
+    </section>
+
+    <section class="signal-register" aria-labelledby="registerTitle">
+      <header><div><p class="panel-kicker">Werkvoorraad na groepering</p><h2 id="registerTitle">Signaalclusters</h2></div><p>De regels ordenen aandacht; een analist bepaalt welke bronvergelijking proportioneel is.</p></header>
+      <div class="register-head"><span>Cluster</span><span>Regelcombinatie</span><span>Venster</span><span>Status</span></div>
+      <div id="clusterRows"></div>
+    </section>
+
+    <section class="rule-method" aria-labelledby="rulesTitle">
+      <div><p class="panel-kicker">Transparante detectie</p><h2 id="rulesTitle">Wat de regels wel en niet doen</h2><p>Elke hit blijft herleidbaar tot tijd, positie en ingestelde drempel. De regels herkennen patronen, geen intentie.</p></div>
+      <ol><li><b>1.284</b><span>ruwe regelhits</span></li><li><b>96</b><span>overlappende vensters</span></li><li><b>8</b><span>clusters na deduplicatie</span></li><li><b>1</b><span>uitgewerkte voorbeeldcasus</span></li></ol>
+    </section>
+  </main>
+  <script src="/signaalverkenner.js"></script>
+</body>
+</html>
