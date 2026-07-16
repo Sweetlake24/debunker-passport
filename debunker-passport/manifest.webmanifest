@@ -1,0 +1,10 @@
+{
+  "name": "Debunker Passport",
+  "short_name": "Debunker",
+  "description": "Defensieve ketencontrole voor retourbrandstof.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f1eb",
+  "theme_color": "#163039",
+  "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

@@ -6,7 +6,11 @@
     { "source": "/app.js", "destination": "/debunker-passport/app.js" },
     { "source": "/risk-engine.js", "destination": "/debunker-passport/risk-engine.js" },
     { "source": "/demo-case.json", "destination": "/debunker-passport/demo-case.json" },
-    { "source": "/passport-schema.json", "destination": "/debunker-passport/passport-schema.json" }
+    { "source": "/passport-schema.json", "destination": "/debunker-passport/passport-schema.json" },
+    { "source": "/favicon.svg", "destination": "/debunker-passport/favicon.svg" },
+    { "source": "/manifest.webmanifest", "destination": "/debunker-passport/manifest.webmanifest" },
+    { "source": "/robots.txt", "destination": "/debunker-passport/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/debunker-passport/sitemap.xml" }
   ],
   "headers": [
     {

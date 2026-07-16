@@ -4,17 +4,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#163039">
+  <meta name="description" content="Defensieve ketencontrole voor debunkering, retourbrandstof en mogelijke afvalstatus. Leg feiten, bronnen en onzekerheden lokaal vast.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:title" content="Debunker Passport — ketencontrole">
+  <meta property="og:description" content="Een lokaal werkend dossier voor defensieve OSINT- en complianceanalyse van retourbrandstof.">
+  <meta property="og:url" content="https://debunker-passport.vercel.app/">
+  <meta name="twitter:card" content="summary">
   <title>Debunker Passport — ketencontrole</title>
+  <link rel="canonical" href="https://debunker-passport.vercel.app/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#passportForm">Ga naar het dossierformulier</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Debunker Passport start">
       <span class="brand-mark" aria-hidden="true">DP</span>
       <span><strong>Debunker Passport</strong><small>Ketencontrole voor retourbrandstof</small></span>
     </a>
     <div class="top-actions">
-      <span class="save-state" id="saveState">Lokaal opgeslagen</span>
+      <span class="save-state" id="saveState" role="status" aria-live="polite">Lokaal opgeslagen</span>
       <details class="dossier-menu"><summary class="button ghost">Dossier</summary><div><button id="loadDemo" type="button">Laad historische demo</button><button id="exportJson" type="button">Exporteer JSON</button><button id="exportIntegrity" type="button">Integriteitsmanifest</button><label for="importJson">Importeer JSON</label><input id="importJson" type="file" accept="application/json,.json" hidden></div></details>
       <button class="button ghost" id="newCase" type="button">Nieuwe casus</button>
       <button class="button" id="exportReport" type="button">Exporteer rapport</button>
