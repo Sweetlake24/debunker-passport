@@ -3,9 +3,11 @@
   "rewrites": [
     { "source": "/", "destination": "/debunker-passport/index.html" },
     { "source": "/documenten", "destination": "/debunker-passport/documenten.html" },
+    { "source": "/netwerkkaart", "destination": "/debunker-passport/netwerkkaart.html" },
     { "source": "/styles.css", "destination": "/debunker-passport/styles.css" },
     { "source": "/app.js", "destination": "/debunker-passport/app.js" },
     { "source": "/risk-engine.js", "destination": "/debunker-passport/risk-engine.js" },
+    { "source": "/netwerkkaart.js", "destination": "/debunker-passport/netwerkkaart.js" },
     { "source": "/demo-case.json", "destination": "/debunker-passport/demo-case.json" },
     { "source": "/passport-schema.json", "destination": "/debunker-passport/passport-schema.json" },
     { "source": "/favicon.svg", "destination": "/debunker-passport/favicon.svg" },
