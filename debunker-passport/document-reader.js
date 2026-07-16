@@ -6,9 +6,10 @@ const docs={
  'internationale-casusmatrix':{title:'Vergelijkende internationale casusmatrix',file:'/onderzoek/vergelijkende-internationale-casusmatrix.md'},
  'historische-voorbeeldcasus':{title:'Ingevulde historische voorbeeldcasus',file:'/onderzoek/voorbeeldcasus-ECLI-NL-GHDHA-2018-3444.md'},
  'haven-regelgevingsmatrix':{title:'Internationale haven- en regelgevingsmatrix',file:'/onderzoek/internationale-haven-en-regelgevingsmatrix.md'},
- 'stoffen-documenten-massabalans':{title:'Stoffen-, documenten- en massabalansmatrix',file:'/onderzoek/stoffen-documenten-en-massabalansmatrix.md'}
+ 'stoffen-documenten-massabalans':{title:'Stoffen-, documenten- en massabalansmatrix',file:'/onderzoek/stoffen-documenten-en-massabalansmatrix.md'},
+ 'meldingsprotocol':{title:'Meldingsprotocol en overdrachtspakket',file:'/onderzoek/meldingsprotocol-en-overdrachtspakket.md'}
 };
-const routes={'OSINT-dossier-stookolie-en-afvalfraude.md':'osint-dossier','360-graden-OSINT-werkboek.md':'360-graden-werkboek','debunkering-risicodossier-ARA-Singapore.md':'debunkering-ara-singapore','vergelijkende-internationale-casusmatrix.md':'internationale-casusmatrix','voorbeeldcasus-ECLI-NL-GHDHA-2018-3444.md':'historische-voorbeeldcasus','internationale-haven-en-regelgevingsmatrix.md':'haven-regelgevingsmatrix','stoffen-documenten-en-massabalansmatrix.md':'stoffen-documenten-massabalans'};
+const routes={'OSINT-dossier-stookolie-en-afvalfraude.md':'osint-dossier','360-graden-OSINT-werkboek.md':'360-graden-werkboek','debunkering-risicodossier-ARA-Singapore.md':'debunkering-ara-singapore','vergelijkende-internationale-casusmatrix.md':'internationale-casusmatrix','voorbeeldcasus-ECLI-NL-GHDHA-2018-3444.md':'historische-voorbeeldcasus','internationale-haven-en-regelgevingsmatrix.md':'haven-regelgevingsmatrix','stoffen-documenten-en-massabalansmatrix.md':'stoffen-documenten-massabalans','meldingsprotocol-en-overdrachtspakket.md':'meldingsprotocol'};
 const key=document.body.dataset.document,meta=docs[key],content=document.getElementById('readerContent'),toc=document.getElementById('readerToc');
 const escapeHtml=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
