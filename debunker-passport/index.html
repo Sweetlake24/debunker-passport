@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Debunker Passport — ketencontrole</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Debunker Passport start">
+      <span class="brand-mark" aria-hidden="true">DP</span>
+      <span><strong>Debunker Passport</strong><small>Ketencontrole voor retourbrandstof</small></span>
+    </a>
+    <div class="top-actions">
+      <span class="save-state" id="saveState">Lokaal opgeslagen</span>
+      <details class="dossier-menu"><summary class="button ghost">Dossier</summary><div><button id="loadDemo" type="button">Laad historische demo</button><button id="exportJson" type="button">Exporteer JSON</button><button id="exportIntegrity" type="button">Integriteitsmanifest</button><label for="importJson">Importeer JSON</label><input id="importJson" type="file" accept="application/json,.json" hidden></div></details>
+      <button class="button ghost" id="newCase" type="button">Nieuwe casus</button>
+      <button class="button" id="exportReport" type="button">Exporteer rapport</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="case-header" aria-labelledby="case-title">
+      <div>
+        <p class="eyebrow">Defensieve OSINT- en complianceanalyse</p>
+        <input id="caseTitle" class="case-title" aria-label="Casustitel" value="Nieuwe retourpartij" maxlength="100">
+        <p>Registreer feiten, bronkwaliteit en onzekerheden. De signalering activeert menselijke beoordeling; zij stelt geen fraude of afvalstatus vast.</p>
+      </div>
+      <div class="case-meta">
+        <label>Casus-ID<input id="caseId" autocomplete="off"></label>
+        <label>Analist<input id="analyst" autocomplete="off" placeholder="Naam of team"></label>
+        <label>Peildatum<input id="asOfDate" type="date"></label>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <nav class="step-nav" aria-label="Dossieronderdelen">
+        <button class="nav-step active" data-target="identity"><span>01</span> Partij</button>
+        <button class="nav-step" data-target="reason"><span>02</span> Aanleiding</button>
+        <button class="nav-step" data-target="quality"><span>03</span> Kwaliteit</button>
+        <button class="nav-step" data-target="transfer"><span>04</span> Overdracht</button>
+        <button class="nav-step" data-target="status"><span>05</span> Status</button>
+        <button class="nav-step" data-target="lineage"><span>06</span> Afstamming</button>
+        <button class="nav-step" data-target="sources"><span>07</span> Bronnen</button>
+        <button class="nav-step" data-target="timeline"><span>08</span> Tijdlijn</button>
+      </nav>
+
+      <form id="passportForm" class="form-column">
+        <section class="form-section active" id="identity">
+          <div class="section-heading"><span>01</span><div><h2>Partij-identiteit</h2><p>Koppel de retourpartij aan de oorspronkelijke levering.</p></div></div>
+          <div class="field-grid">
+            <label>Oorspronkelijk BDN-nummer<input name="bdnNumber" autocomplete="off"></label>
+            <label>Oorspronkelijke batch-ID<input name="originalBatchId" autocomplete="off"></label>
+            <label>Huidige tank-/batch-ID<input name="currentBatchId" autocomplete="off"></label>
+            <label>Brandstofgrade<input name="fuelGrade" placeholder="Bijv. RMG 380" autocomplete="off"></label>
+            <label>Leveringsdatum<input name="deliveryDate" type="date"></label>
+            <label>Eerste klacht<input name="firstComplaintDate" type="date"></label>
+            <label>Afgevend schip / IMO<input name="vessel" autocomplete="off"></label>
+            <label>Oorspronkelijke leverancier<input name="originalSupplier" autocomplete="off"></label>
+            <label class="wide">Herkomst (haven, terminal, tank)<input name="origin" autocomplete="off"></label>
+          </div>
+        </section>
+
+        <section class="form-section" id="reason">
+          <div class="section-heading"><span>02</span><div><h2>Aanleiding voor debunkering</h2><p>Leg de operationele reden vast zonder haar juridisch te interpreteren.</p></div></div>
+          <div class="field-grid">
+            <label>Primaire reden<select name="reason"><option value="">Selecteer</option><option value="excess">Overtollige bunker</option><option value="wrong-grade">Verkeerde maar bruikbare grade</option><option value="off-spec">Off-spec parameter</option><option value="operational">Technische/operationele problemen</option><option value="contamination">(Mogelijke) contaminatie</option><option value="regulatory">Niet-conform met regelgeving</option><option value="unknown">Onbekend</option></select></label>
+            <label>Technische impact<select name="technicalImpact"><option value="none">Geen gemeld</option><option value="minor">Beheersbare afwijking</option><option value="repeated">Herhaalde storingen</option><option value="safety">Veiligheids- of uitvalrisico</option></select></label>
+            <label>Klachten bij meerdere afnemers?<select name="multipleComplaints"><option value="unknown">Onbekend</option><option value="no">Nee</option><option value="yes">Ja</option></select></label>
+            <label>Prijsverschil met oorspronkelijke levering (%)<input name="priceDrop" type="number" min="-500" max="100" step="0.1" placeholder="Positief = prijsdaling"></label>
+            <label class="wide">Feitelijke beschrijving<textarea name="incidentDescription" rows="5" placeholder="Wat is waargenomen, door wie en wanneer?"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-section" id="quality">
+          <div class="section-heading"><span>03</span><div><h2>Kwaliteit en monsters</h2><p>Controleer of analyses de gemelde klacht werkelijk afdekken.</p></div></div>
+          <div class="field-grid">
+            <label>Voldoet aan ISO 8217?<select name="isoStatus"><option value="unknown">Onbekend</option><option value="yes">Ja</option><option value="no">Nee</option><option value="partial">Niet volledig onderzocht</option></select></label>
+            <label>Contaminatie gemeld/vermoed?<select name="contamination"><option value="unknown">Onbekend</option><option value="no">Nee</option><option value="suspected">Vermoed</option><option value="confirmed">Bevestigd</option></select></label>
+            <label>Tankmonster vóór transfer?<select name="tankSample"><option value="unknown">Onbekend</option><option value="yes">Ja, verzegeld</option><option value="no">Nee</option></select></label>
+            <label>Composite transfer sample?<select name="compositeSample"><option value="unknown">Onbekend</option><option value="yes">Ja, verzegeld</option><option value="no">Nee</option></select></label>
+            <label>Analyse verklaart de klacht?<select name="analysisCoversComplaint"><option value="unknown">Onbekend</option><option value="yes">Ja</option><option value="partial">Gedeeltelijk</option><option value="no">Nee</option></select></label>
+            <label>Monster-/sealnummers consistent?<select name="sealConsistency"><option value="unknown">Onbekend</option><option value="yes">Ja</option><option value="no">Nee</option></select></label>
+            <label class="wide">Afwijkende parameters / bevindingen<textarea name="qualityFindings" rows="4"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-section" id="transfer">
+          <div class="section-heading"><span>04</span><div><h2>Overdracht en bestemming</h2><p>Verbind massa, ontvanger, bevoegdheid en feitelijke ontvangst.</p></div></div>
+          <div class="field-grid">
+            <label>Geplande transferdatum<input name="transferDate" type="date"></label>
+            <label>Te transfereren massa (ton)<input name="plannedMass" type="number" min="0" step="0.001"></label>
+            <label>Feitelijk ontvangen massa (ton)<input name="receivedMass" type="number" min="0" step="0.001"></label>
+            <label>Meetmethode<select name="measurementMethod"><option value="unknown">Onbekend</option><option value="mfm">Mass Flow Meter</option><option value="tank">Tankmeting</option><option value="documents">Alleen documentwaarde</option></select></label>
+            <label>Ontvangend bedrijf<input name="receiver" autocomplete="off"></label>
+            <label>Ontvangend schip / tank<input name="receivingAsset" autocomplete="off"></label>
+            <label>Ontvangersbevoegdheid<select name="receiverAuthority"><option value="unknown">Niet geverifieerd</option><option value="product">Bunker-/productrol geverifieerd</option><option value="waste">Afvalinzameling/-verwerking geverifieerd</option><option value="both">Beide geverifieerd</option><option value="none">Geen passende bevoegdheid gevonden</option></select></label>
+            <label>Jurisdictiewissel?<select name="crossBorder"><option value="no">Nee</option><option value="yes">Ja</option><option value="unknown">Onbekend</option></select></label>
+            <label class="wide">Geplande bestemming<input name="destination" autocomplete="off"></label>
+            <label>Ontvangst bevestigd?<select name="receiptConfirmed"><option value="unknown">Onbekend/nog niet</option><option value="yes">Ja</option><option value="no">Nee, afwijking</option></select></label>
+            <label>Bestemming gewijzigd?<select name="destinationChanged"><option value="unknown">Onbekend</option><option value="no">Nee</option><option value="yes-reported">Ja, gemeld</option><option value="yes-unreported">Ja, niet aantoonbaar gemeld</option></select></label>
+          </div>
+        </section>
+
+        <section class="form-section" id="status">
+          <div class="section-heading"><span>05</span><div><h2>Statusbeslissing</h2><p>Documenteer de redenering; de tool beslist niet of iets afval is.</p></div></div>
+          <div class="field-grid">
+            <label>Voorlopige status<select name="declaredStatus"><option value="unknown">Nog niet bepaald</option><option value="product">Product/brandstof</option><option value="waste">Afvalstof</option><option value="hold">In quarantaine / beoordeling</option></select></label>
+            <label>Beslisser / bevoegde partij<input name="statusDecider" autocomplete="off"></label>
+            <label>Hergebruik zonder behandeling?<select name="directReuse"><option value="unknown">Onbekend</option><option value="yes">Ja, aantoonbaar</option><option value="no">Nee</option></select></label>
+            <label>Behandeling nodig?<select name="treatmentNeeded"><option value="unknown">Onbekend</option><option value="none">Geen</option><option value="simple">Eenvoudige verwerking</option><option value="substantial">Wezenlijke behandeling</option></select></label>
+            <label>Behandeling vergund/gecontroleerd?<select name="treatmentAuthorised"><option value="unknown">Niet geverifieerd</option><option value="yes">Ja</option><option value="no">Nee</option><option value="not-applicable">Niet van toepassing</option></select></label>
+            <label>Opnieuw als bunker leveren?<select name="resupply"><option value="unknown">Onbekend</option><option value="no">Nee</option><option value="yes-before-treatment">Ja, zonder aantoonbare behandeling</option><option value="yes-after-treatment">Ja, na behandeling en controle</option></select></label>
+            <label class="wide">Technische en juridische onderbouwing<textarea name="statusRationale" rows="5"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-section" id="lineage">
+          <div class="section-heading"><span>06</span><div><h2>Partij-afstamming</h2><p>Bewaar de parent-ID wanneer tanks, eigenaren of batches wijzigen.</p></div></div>
+          <div class="lineage-head"><span>Nieuwe batch/tank</span><span>Handeling</span><span>Datum</span><span>Massa ton</span><span></span></div>
+          <div id="lineageRows"></div>
+          <button class="text-action" id="addLineage" type="button">+ Afgeleide partij toevoegen</button>
+        </section>
+
+        <section class="form-section" id="sources">
+          <div class="section-heading"><span>07</span><div><h2>Bronnenregister</h2><p>Leg herkomst, datum en betrouwbaarheid vast.</p></div></div>
+          <div class="source-head"><span>Bron / URL</span><span>Datum</span><span>Waardering</span><span></span></div>
+          <div id="sourceRows"></div>
+          <button class="text-action" id="addSource" type="button">+ Bron toevoegen</button>
+        </section>
+        <section class="form-section" id="timeline"><div class="section-heading"><span>08</span><div><h2>Dossiertijdlijn</h2><p>Automatisch opgebouwd uit levering, klacht, transfer en partij-afstamming.</p></div></div><div id="timelineRows" class="timeline"></div></section>
+      </form>
+
+      <aside class="inspector" aria-live="polite">
+        <div class="risk-header">
+          <div class="risk-ring" id="riskRing"><span id="riskScore">0</span><small>/ 100</small></div>
+          <div><p class="eyebrow">Signaalniveau</p><h2 id="riskLabel">Onvoldoende gegevens</h2><p id="riskNote">Vul de kernvelden in om inconsistenties te toetsen.</p></div>
+        </div>
+        <div class="coverage"><span>Dossierdekking</span><strong id="coverageValue">0%</strong><div><i id="coverageBar"></i></div></div>
+        <div class="signal-heading"><h3>Controles</h3><span id="signalCount">0 signalen</span></div>
+        <div id="signals" class="signals"><p class="empty">Nog geen controles actief.</p></div>
+        <details class="score-info"><summary>Hoe wordt de score berekend?</summary><p>Iedere zichtbare regel heeft een vast gewicht. Bij meerdere signalen dempt de berekening de som. Een rood signaal activeert altijd directe menselijke beoordeling.</p><p>De score prioriteert controle en is geen kansberekening, bewijs of juridische kwalificatie.</p></details>
+        <details class="audit-info"><summary>Auditlog <span id="auditCount">0 wijzigingen</span></summary><div id="auditRows"></div></details>
+        <div class="legend"><span><i class="dot red"></i> Direct beoordelen</span><span><i class="dot amber"></i> Verifiëren</span><span><i class="dot blue"></i> Ontbrekend gegeven</span></div>
+      </aside>
+    </div>
+  </main>
+
+  <template id="lineageTemplate"><div class="lineage-row repeat-row"><input data-key="childId" aria-label="Nieuwe batch of tank"><select data-key="action" aria-label="Handeling"><option>Opslag</option><option>Transfer</option><option>Blending</option><option>Behandeling</option><option>Herlevering</option><option>Verwijdering</option></select><input data-key="date" type="date" aria-label="Datum"><input data-key="mass" type="number" step="0.001" min="0" aria-label="Massa"><button type="button" class="remove" aria-label="Verwijder rij">×</button></div></template>
+  <template id="sourceTemplate"><div class="source-row repeat-row"><input data-key="reference" aria-label="Bron of URL"><input data-key="date" type="date" aria-label="Datum"><select data-key="rating" aria-label="Bronwaardering"><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C2</option><option>C3</option><option>D3</option><option>E4</option></select><button type="button" class="remove" aria-label="Verwijder rij">×</button></div></template>
+  <script src="risk-engine.js"></script><script src="app.js"></script>
+</body>
+</html>

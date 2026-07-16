@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/debunker-passport.schema.json",
+  "title": "Debunker Passport",
+  "description": "Defensief ketenrecord; de statusvelden zijn verklaringen, geen automatische juridische kwalificatie.",
+  "type": "object",
+  "required": ["meta", "fields", "lineage", "sources"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["caseId", "caseTitle", "asOfDate"],
+      "properties": {
+        "caseId": {"type": "string", "maxLength": 80},
+        "caseTitle": {"type": "string", "maxLength": 100},
+        "analyst": {"type": "string", "maxLength": 100},
+        "asOfDate": {"type": "string", "format": "date"}
+      }
+    },
+    "fields": {"type": "object", "additionalProperties": {"type": ["string", "number"]}},
+    "lineage": {
+      "type": "array",
+      "items": {"type": "object", "required": ["childId", "action"], "properties": {"childId": {"type": "string"}, "action": {"type": "string"}, "date": {"type": "string"}, "mass": {"type": ["string", "number"]}}}
+    },
+    "audit": {"type": "array", "items": {"type": "object"}},
+    "sources": {
+      "type": "array",
+      "items": {"type": "object", "required": ["reference", "rating"], "properties": {"reference": {"type": "string"}, "date": {"type": "string"}, "rating": {"type": "string", "pattern": "^[A-E][1-5]$"}}}
+    }
+  }
+}
