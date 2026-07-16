@@ -39,6 +39,7 @@
           <g class="terminal-zone"><path d="M116 152h218v66H116z"/><text x="132" y="178">FICTIEVE TERMINAL WEST</text><text x="132" y="199">zone T-04</text></g>
           <g class="terminal-zone"><path d="M724 70h220v62H724z"/><text x="740" y="96">FICTIEVE BULKOPSLAG</text><text x="740" y="117">zone B-12</text></g>
           <g class="terminal-zone"><path d="M904 468h214v64H904z"/><text x="920" y="494">FICTIEVE BUNKERKADE</text><text x="920" y="515">zone K-07</text></g>
+          <g class="geofences" aria-label="Fictieve detectiezones"><rect x="535" y="235" width="245" height="125" rx="62"/><text x="558" y="264">GEOFENCE STS-01</text><rect x="878" y="332" width="270" height="142" rx="18"/><text x="900" y="360">GEOFENCE KADE-07</text></g>
           <g class="map-label"><text x="54" y="337">Maasgeul · schematisch</text><text x="475" y="52">havenbekken</text><text x="782" y="610">zijhaven</text></g>
           <g id="trailLayer"></g><g id="eventLayer"></g><g id="vesselLayer"></g>
           <g class="north"><path d="M1140 78l10-28 10 28-10-7z"/><text x="1145" y="100">N</text></g>
@@ -52,8 +53,9 @@
         <time id="clock">14 mei 2026 · 02:00 UTC</time>
         <h2 id="signalTitle">Normale vaart</h2>
         <p id="signalText">Drie synthetische schepen varen door het studiegebied. Start de recorder of kies een signaal.</p>
-        <dl class="signal-facts"><div><dt>Classificatie</dt><dd id="signalClass">Observatie</dd></div><div><dt>Zekerheid</dt><dd id="signalConfidence">—</dd></div><div><dt>Vervolg</dt><dd id="signalAction">Blijf monitoren</dd></div></dl>
+        <dl class="signal-facts"><div><dt>Afstand A–B</dt><dd id="distanceValue">—</dd></div><div><dt>Nabij sinds</dt><dd id="proximityDuration">—</dd></div><div><dt>Zone</dt><dd id="zoneValue">Buiten detectiezone</dd></div><div><dt>Classificatie</dt><dd id="signalClass">Observatie</dd></div><div><dt>Zekerheid</dt><dd id="signalConfidence">—</dd></div><div><dt>Vervolg</dt><dd id="signalAction">Blijf monitoren</dd></div></dl>
         <div class="event-list" id="eventList" aria-label="Gedetecteerde signalen"></div>
+        <div class="signal-actions"><button id="replayWindow" type="button">Speel ±30 min</button><button id="printReport" type="button">Casusrapport</button></div>
       </aside>
     </section>
 
@@ -67,12 +69,24 @@
       <div class="timeline-wrap"><input id="timeline" type="range" min="0" max="360" value="0" step="1" aria-label="Scenariotijd in minuten"><div id="timelineMarkers" class="timeline-markers"></div><div class="timeline-axis"><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00 UTC</span></div></div>
     </section>
 
+    <section class="source-timeline" aria-labelledby="sourceTimelineTitle">
+      <header><div><p class="panel-kicker">Gekoppelde bronnen</p><h2 id="sourceTimelineTitle">Meersporentijdlijn</h2></div><p id="timelineDetail">Selecteer een markering om het bijbehorende bronmoment te beoordelen.</p></header>
+      <div class="lane-grid" id="laneGrid" aria-label="Tijdlijn met AIS-, document-, monster- en betaalsporen"></div>
+      <div class="lane-axis"><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00 UTC</span></div>
+    </section>
+
+    <section class="evidence-section" aria-labelledby="evidenceTitle">
+      <div class="evidence-copy"><p class="panel-kicker">Van signaal naar overdracht</p><h2 id="evidenceTitle">Bewijschecklist</h2><p>De selectie verandert mee met het actieve signaal. Afvinken betekent alleen dat een stuk beschikbaar is, niet dat de inhoud de hypothese bevestigt.</p></div>
+      <div id="evidenceChecklist" class="evidence-checklist"></div>
+    </section>
+
     <section class="method-strip">
       <div><span>01</span><strong>Detecteer</strong><p>Regels markeren nabijheid, stilstand, AIS-gaten en documentafwijkingen.</p></div>
       <div><span>02</span><strong>Speel terug</strong><p>Bekijk het venster vóór, tijdens en na het signaal met dezelfde tijdas.</p></div>
       <div><span>03</span><strong>Verifieer</strong><p>Vraag BDN, MFM-, terminal-, camera- en monstergegevens op; AIS alleen volstaat niet.</p></div>
     </section>
   </main>
+  <section id="printableReport" class="print-report" aria-hidden="true"><header><p>DEBUNKER PASSPORT · FICTIEVE TRAININGSCASUS</p><h1>Concept-overdrachtspakket AIS-signaal</h1><p id="reportGenerated"></p></header><div id="reportBody"></div><footer>Alle namen, posities, documenten en gebeurtenissen zijn synthetisch. Dit rapport is uitsluitend een demonstratie van de methode.</footer></section>
   <script src="/ais-simulator.js"></script>
 </body>
 </html>
